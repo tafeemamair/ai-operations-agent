@@ -11,7 +11,7 @@ An agentic business-operations system that converts natural-language requests in
 - **Persistence**: SQLite
 - **Testing**: pytest
 - **CI/CD**: GitHub Actions
-- **Frontend (planned)**: Next.js / React
+- **Frontend**: Next.js / React operations console
 
 ## Core Workflow
 
@@ -46,17 +46,40 @@ ai-operations-agent/
 │   ├── workflow/
 │   │   ├── state.py         # Workflow state machine & Pydantic models
 │   │   ├── engine.py        # Workflow execution coordinator
-│   │   └── validation.py    # Deterministic output verification gates
+│   │   ├── validation.py    # Deterministic output verification gates
+│   │   └── recovery.py      # Transient-failure retry & recovery logic
 │   ├── api/
 │   │   └── routes.py        # FastAPI route definitions (health & operations)
 │   ├── storage/
-│   │   └── database.py      # SQLite connection & schema management
+│   │   ├── database.py      # SQLite connection & schema management
+│   │   └── repository.py    # WorkflowRepository persistence layer
 │   └── main.py              # Application entrypoint
+├── frontend/
+│   ├── app/                 # Next.js app-router pages & global styles
+│   ├── components/          # WorkflowCreate, Overview, TaskList,
+│   │                        # HumanApproval, AuditTimeline,
+│   │                        # ArtifactsViewer, FailureRecoveryNotice
+│   ├── __tests__/           # Vitest component & API tests
+│   ├── package.json
+│   ├── next.config.js
+│   ├── tsconfig.json
+│   └── vitest.config.ts
 ├── tests/
 │   ├── conftest.py          # Pytest fixtures & test clients
-│   └── test_health.py       # Health check & smoke tests
+│   ├── test_agent.py
+│   ├── test_api.py
+│   ├── test_health.py       # Health check & smoke tests
+│   ├── test_recovery.py
+│   ├── test_storage.py
+│   ├── test_tools.py
+│   └── test_workflow_state.py
 ├── docs/
-│   └── architecture.md      # Architectural design document
+│   ├── architecture.md      # Architectural design document
+│   └── screenshots/
+│       ├── 01_acme_success_workflow.png
+│       ├── 02_human_approval_gate.png
+│       ├── 03_transient_failure_recovery.png
+│       └── 04_permanent_failure_blocked.png
 ├── .github/
 │   └── workflows/
 │       └── ci.yml           # Automated CI pipeline
